@@ -1,66 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Todo } from './entities/Todo';
+import React from 'react';
+import TodoScreen from './screens/TodoScreen';
+import Screen1 from './screens/Screen1';
+import Screen2 from './screens/Screen2';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
+
 
 export default function App() {
-  const [text, setText] = useState('');
-  const [todos, setTodos] = useState([] as Todo[]);
-
-  const deleteTodo = (id: string) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
-  const handleAddTodo = () => {
-    const todo = new Todo(Math.random().toString(), text);
-    setTodos([...todos, todo]);
-  };
-
-  const renderItem = ({ item }: { item: Todo }) => (
-    <Item title={item.title} id={item.id} />
-  );
-  const Item = ({ title, id }: { title: string; id: string }) => (
-    <View style={styles.item}>
-      <Text style={styles.title} onPress={() => deleteTodo(id)}>
-        {title}
-      </Text>
-    </View>
-  );
 
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <Text>Is this crap working?</Text>
-      <TextInput value={text} style={styles.input} onChangeText={setText} />
-      <Button title='Add todo' onPress={handleAddTodo} />
+    <NavigationContainer>
+      <Stack.Navigator>
+      <Stack.Screen name="Todo" component = {TodoScreen} />
+      <Stack.Screen name="Screen1" component = {Screen1} />
+      <Stack.Screen name="Screen2" component = {Screen2} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )}
 
-      <FlatList data={todos} renderItem={renderItem} />
 
-      <StatusBar style='auto' />
-    </View>
-  );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-});
